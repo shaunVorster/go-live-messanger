@@ -1,0 +1,17 @@
+{   "use-flags": {
+        "discord": false,
+        "twitter": false
+    },
+    "access-tokens": {
+        "discord": "discord-api-key",
+        "twitter": {
+            "api-key": "twitter-api-key (consumer key)",
+            "api-secret": "twitter-api-secret (consumer secret)",
+            "bearer-token": "twitter-bearer-token",
+            "access-token":"access-token",
+            "access-secret":"access-secret",
+            "client-key":"client-key",
+            "client-secret":"client-secret"
+        }
+    }
+}
