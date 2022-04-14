@@ -1,3 +1,4 @@
+from distutils.command.config import config
 import discord
 import tweepy
 import asyncio
@@ -11,32 +12,76 @@ def checkRequirements():
     dependencies = ['discord.py', 'tweepy']
     pkg_resources.require(dependencies)
 
-def main():
-    # Get message from user
-    message = input('Enter message: ')
-    print('the message is: '  + str(message))
+# ------------------------------------------------------------------------------------
+
+def main():    
+    # Get message with confirmation
+    message = getMessage()
     
     #  Read data from settings.json file
     settings = open('settings.json', 'r')
     settingsData = json.load(settings)
     
+    # Activate Discord Messanger
+    SendDiscordMessages(settingsData, message)
+    
+    # Activate Twitter Messanger
+    SendTwitterMessage(settingsData, message)
+    
+# ------------------------------------------------------------------------------------   
+ 
+def getMessage():
+    ## Get message from user and display message
+    message = input('Enter message:')
+    print('')
+    print('the message is: '  + str(message))
+    print ('')
+    
+    # Get confirmation on the message from the user
+    confirm = input('Are you happy with the message? (y/n): ')     
+    print('')
+    
+    # If confirmation is not accepted, ask for message again
+    if confirm.upper() == 'Y':
+        return message
+    else:
+        return getMessage()
+    
+# ------------------------------------------------------------------------------------  
+
+def SendDiscordMessages(settingsData, message):
     # Check if discord messanger is enabled
     if(settingsData['use-flags']['discord'] == True):
         # Run discordMessanger()
         discordMessanger(settingsData, message) 
     else:
-        print('Discord messanger is disabled')
-        print('------------------------------------------------------------------------------------')
+        confirm = input('Discord messanger is disabled in settings, would you like to send a message to discord? (y/n): ')
         print('')
         
+        if confirm.upper() == 'Y':
+            discordMessanger(settingsData, message)
+        else:
+            print('Discord messanger is disabled')
+            print('------------------------------------------------------------------------------------')
+            print('')
+
+# ------------------------------------------------------------------------------------  
+
+def SendTwitterMessage(settingsData, message):
+    # Check if twitter messanger is enabled
     if(settingsData['use-flags']['twitter'] == True):
         # Run twitterMessanger()
         twitterMessanger(settingsData, message)
     else:
-        print('Twitter messanger is disabled')
-        print('------------------------------------------------------------------------------------')
+        confirm = input('Twitter messanger is disabled in settings, would you like to send a message to twitter? (y/n): ')
         print('')
-        
+        if confirm.upper() == 'Y':
+            twitterMessanger(settingsData, message)
+        else:
+            print('Twitter messanger is disabled')
+            print('------------------------------------------------------------------------------------')
+            print('')
+ 
 # ------------------------------------------------------------------------------------  
 
 def discordMessanger(settingsData, message):
@@ -47,8 +92,9 @@ def discordMessanger(settingsData, message):
     
     try:
         # Read the data from channel-ids.txt
-        channelIds = open('channel-ids.txt', 'r')
-        channelLines = channelIds.readlines()
+        channelIds = open('channel-ids.json', 'r')
+        channelIdsData = json.load(channelIds)
+        channelIdList = channelIdsData['channel-ids']
 
         # Create discord client
         client = discord.Client()
@@ -58,22 +104,23 @@ def discordMessanger(settingsData, message):
 
             try:
                 # Loop through every line in the channel id list
-                for channelId in channelLines:
-                    # Wait until client is ready
-                    await client.wait_until_ready()
+                for channelId in channelIdList:
+                    if(channelId['active'] == True):
+                        # Wait until client is ready
+                        await client.wait_until_ready()
 
-                    # Get channel using channelId
-                    channel = client.get_channel(id=int(channelId))
+                        # Get channel using channelId
+                        channel = client.get_channel(id=int(channelId['id']))
 
-                    if channel is None:
-                        raise Exception(f'Channel with id {channelId.strip()} not found')
-                    
-                    # Print out mesage and channel name to console
-                    print(f'Sending message "{message}" to channel: "{channel}"')
-                    print('')
+                        if channel is None:
+                            raise Exception(f'Channel with id {channelId.strip()} not found')
+                        
+                        # Print out mesage and channel name to console
+                        print(f'Sending message "{message}" to channel: "{channel}"')
+                        print('')
 
-                    # Send message to channel
-                    await channel.send(f'{message}')
+                        # Send message to channel
+                        await channel.send(f'{message}')
 
                 # Close client
                 await client.close()

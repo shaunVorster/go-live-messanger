@@ -12,8 +12,9 @@ How to enable Developer Mode in Discord
 * In the left sidebar, click on ‘Advanced’ > Click on the ‘Developer Mode’ toggle to turn it on
 
 How to find your channel Id
+* Rename channel-ids(Blank).json to channel-ids.json
 * To find the Channel ID, right-click on the required channel name in the left sidebar and click on ‘Copy ID’.
-* Paste each channel id a new line in the channel-id
+* Paste each channel id a new json object in the channel-id.json file
 
 ## Twitter
 

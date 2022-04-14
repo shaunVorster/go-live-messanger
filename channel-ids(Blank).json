@@ -1,0 +1,6 @@
+{
+    "channel-ids": [
+        {"id":"id 1", "active" : true},
+        {"id":"id 2", "active" : true}
+    ]
+}
