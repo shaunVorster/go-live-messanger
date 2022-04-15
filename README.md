@@ -2,23 +2,24 @@
 
 ## Discord
 
-To set up discord you will need your discord API key. To find your key, follow this guide below:
-https://www.online-tech-tips.com/computer-tips/what-is-a-discord-token-and-how-to-get-one/
+To set up discord you will need your discord API key. To find your key, follow this [guide](https://www.online-tech-tips.com/computer-tips/what-is-a-discord-token-and-how-to-get-one/)
 
 To find your channel id's, do the following:
 
 How to enable Developer Mode in Discord
+
 * Click on ‘User Settings’ (the gear icon next to your Discord avatar)
 * In the left sidebar, click on ‘Advanced’ > Click on the ‘Developer Mode’ toggle to turn it on
 
 How to find your channel Id
+
 * Rename channel-ids(Blank).json to channel-ids.json
 * To find the Channel ID, right-click on the required channel name in the left sidebar and click on ‘Copy ID’.
 * Paste each channel id a new json object in the channel-id.json file
 
 ## Twitter
 
-You will need to apply for a twitter deveopment account: https://developer.twitter.com
+You will need to apply for a twitter [deveopment account](https://developer.twitter.com)
 
 * Once you have signed up the development account. You will need to elevate your permission level.
 * Click on the project name (Should be "Project 1") on your dashboard.
@@ -27,9 +28,16 @@ You will need to apply for a twitter deveopment account: https://developer.twitt
 
 Then you can go back to the project and add an application. That will allow you to generate your keys.
 Make sure to generate:
+
 * Consumer Keys
 * Authentication token
 * Access token and secret
+
+## Reddit
+
+* To set up a reddit api key follow this [guide](https://www.jcchouinard.com/get-reddit-api-credentials-with-praw/)
+* **Note** Dont craete a seperate json file, add the connection details to settings.json
+* **Note** The refreshToken.py script has already been created and added to the repo
 
 ## Settings.json
 
@@ -39,6 +47,7 @@ Make sure to generate:
 * Save and close the file
 
 ## send-message.py
+
 * Make sure that python is installed on your system
 * Make sure that all dependencies are installed
   * discord.py (pip install discord.py)
