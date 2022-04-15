@@ -1,6 +1,8 @@
-{   "use-flags": {
+{
+    "use-flags": {
         "discord": false,
-        "twitter": false
+        "twitter": false,
+        "reddit": false
     },
     "access-tokens": {
         "discord": "discord-api-key",
@@ -8,10 +10,17 @@
             "api-key": "twitter-api-key (consumer key)",
             "api-secret": "twitter-api-secret (consumer secret)",
             "bearer-token": "twitter-bearer-token",
-            "access-token":"access-token",
-            "access-secret":"access-secret",
-            "client-key":"client-key",
-            "client-secret":"client-secret"
+            "access-token": "access-token",
+            "access-secret": "access-secret",
+            "client-key": "client-key",
+            "client-secret": "client-secret"
+        },
+        "reddit": {
+            "client_id": "reddit-api-key",
+            "client_secret": "reddit-api-secret",
+            "user_agent": "script by u/yourusername",
+            "redirect_uri": "http://localhost:8080",
+            "refresh_token": "reddit-refresh-token"
         }
     }
 }
