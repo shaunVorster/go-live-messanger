@@ -308,7 +308,8 @@ def redditMessanger(settingsData, message):
                     # If not, submit without the flair
                     subreddit.submit(title, selftext=message)
                 else:
-                    print(f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" with flair "{sub["flair-text"]}"')
+                    print(
+                        f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" with flair text "{sub["flair-text"]}" and flair id "{flair_id}"')
                     # If it has, submit with the flair
                     subreddit.submit(title, selftext=message, flair_id=flair_id)
 
