@@ -1,4 +1,4 @@
-  #!/usr/bin/env python
+#!/usr/bin/env python
 
 """This example demonstrates the flow for retrieving a refresh token.
 
@@ -52,7 +52,8 @@ def main():
     client_id = input(
         "Enter the client ID, it's the line just under Personal use script at the top: "
     )
-    client_secret = input("Enter the client secret, it's the line next to secret: ")
+    client_secret = input(
+        "Enter the client secret, it's the line next to secret: ")
     commaScopes = input(
         "Now enter a comma separated list of scopes, or all for all tokens: "
     )

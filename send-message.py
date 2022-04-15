@@ -15,6 +15,7 @@ def checkRequirements():
 
 # ------------------------------------------------------------------------------------
 
+
 def main():
     # Get message with confirmation
     message = getTextWithConfirmation("Enter message")
@@ -34,6 +35,7 @@ def main():
 
 # ------------------------------------------------------------------------------------
 
+
 def getTextWithConfirmation(inputMessage):
     # Get message from user and display message
     message = input(f'{inputMessage}: ')
@@ -52,6 +54,7 @@ def getTextWithConfirmation(inputMessage):
         return getTextWithConfirmation(inputMessage)
 
 # ------------------------------------------------------------------------------------
+
 
 def SendDiscordMessages(settingsData, message):
     # Check if discord messanger is enabled
@@ -73,6 +76,7 @@ def SendDiscordMessages(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
+
 def SendTwitterMessage(settingsData, message):
     # Check if twitter messanger is enabled
     if(settingsData['use-flags']['twitter'] == True):
@@ -92,6 +96,7 @@ def SendTwitterMessage(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
+
 def SendRedditMessage(settingsData, message):
     # Check if reddit messanger is enabled
     if(settingsData['use-flags']['reddit'] == True):
@@ -110,6 +115,7 @@ def SendRedditMessage(settingsData, message):
             print('')
 
 # ------------------------------------------------------------------------------------
+
 
 def discordMessanger(settingsData, message):
     print('')
@@ -205,6 +211,7 @@ def discordMessanger(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
+
 def twitterMessanger(settingsData, message):
     print('')
     print('Twitter Messanger')
@@ -245,6 +252,7 @@ def twitterMessanger(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
+
 def redditMessanger(settingsData, message):
     print('')
     print('Reddit Messanger')
@@ -280,7 +288,8 @@ def redditMessanger(settingsData, message):
                 if(sub['flair-id'] == ""):
 
                     # List all flairs in the subreddit
-                    flairs = list(subreddit.flair.link_templates.user_selectable())
+                    flairs = list(
+                        subreddit.flair.link_templates.user_selectable())
 
                     # Loop through every flair in the list
                     for flair in flairs:
@@ -304,14 +313,16 @@ def redditMessanger(settingsData, message):
                 # Check if the flair_id has been set
                 if (flair_id == ""):
 
-                    print(f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" without flair')
+                    print(
+                        f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" without flair')
                     # If not, submit without the flair
                     subreddit.submit(title, selftext=message)
                 else:
                     print(
                         f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" with flair text "{sub["flair-text"]}" and flair id "{flair_id}"')
                     # If it has, submit with the flair
-                    subreddit.submit(title, selftext=message, flair_id=flair_id)
+                    subreddit.submit(title, selftext=message,
+                                     flair_id=flair_id)
 
         # Print completed message to console
         print('')
