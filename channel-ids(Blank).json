@@ -1,6 +1,26 @@
 {
     "channel-ids": [
-        {"id":"id 1", "active" : true},
-        {"id":"id 2", "active" : true}
+        {
+            "id": "id 1",
+            "active": true
+        },
+        {
+            "id": "id 2",
+            "active": true
+        }
+    ],
+    "subreddit-names": [
+        {
+            "name": "Subreddit 1",
+            "flair-id": "This can be pulled from script output",
+            "flair-text": "Flair text",
+            "active": true
+        },
+        {
+            "name": "Subreddit 2",
+            "flair-id": "",
+            "flair-text": "Flair text",
+            "active": true
+        }
     ]
 }
