@@ -1,4 +1,4 @@
-# go-live-messanger Setup
+# **Go-live-messanger Setup**
 
 ## Discord
 
