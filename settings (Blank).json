@@ -4,6 +4,12 @@
         "twitter": false,
         "reddit": false
     },
+    "urls": {
+        "twitch": {
+            "url":"url",
+            "auto-amend": false
+        }
+    },
     "access-tokens": {
         "discord": "discord-api-key",
         "twitter": {

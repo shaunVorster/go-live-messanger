@@ -19,11 +19,26 @@ def checkRequirements():
 def main():
     # Get message with confirmation
     message = getTextWithConfirmation("Enter message")
-
+    
     #  Read data from settings.json file
     settings = open('settings.json', 'r')
     settingsData = json.load(settings)
 
+    # Check if auto-amend is enabled
+    if(settingsData['urls']['twitch']['auto-amend'] == True):
+        
+        # Amend twitch url
+        message = amendTextToMessage(message, settingsData['urls']['twitch']['url'])
+    else:
+        # Confirm if twitch url should be amended
+        confirm = input("Would you like to add the twitch url to the message? (y/n): ")
+        
+        # If yes, amend the message
+        if(confirm.upper() == 'Y'):
+        
+            # Amend twitch url to message
+            message = amendTextToMessage(message, settingsData['urls']['twitch']['url'])
+    
     # Activate Discord Messanger
     SendDiscordMessages(settingsData, message)
 
@@ -344,6 +359,16 @@ def redditMessanger(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
+def amendTextToMessage(message, text):
+    message = message + ' - ' + text
+    
+    print()
+    print("Amended Message: " + message)
+    print()
+    
+    return message
+
+# ------------------------------------------------------------------------------------
 
 checkRequirements()
 main()
