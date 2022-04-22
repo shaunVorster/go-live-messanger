@@ -287,6 +287,9 @@ def redditMessanger(settingsData, message):
                              redirect_uri=settingsData['access-tokens']['reddit']['redirect-uri'],
                              refresh_token=settingsData['access-tokens']['reddit']['refresh-token'])
 
+        # Enter a title for the post
+        title = getTextWithConfirmation("Enter a title for the post: ")
+
         # Loop through every subreddit in the subreddit list
         for sub in subredditList:
 
@@ -319,9 +322,6 @@ def redditMessanger(settingsData, message):
                     # Retrieve the saved flair-id from the subreddit config
                     flair_id = sub['flair-id']
 
-                # Enter a title for the post
-                title = getTextWithConfirmation("Enter a title for the post: ")
-
                 # Set client validation on submit to true
                 client.validate_on_submit = True
 
@@ -330,11 +330,13 @@ def redditMessanger(settingsData, message):
 
                     print(
                         f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" without flair')
+                    
                     # If not, submit without the flair
                     subreddit.submit(title, selftext=message)
                 else:
                     print(
                         f'Sending message "{message}" with title "{title}" to subreddit: "{sub["name"]}" with flair text "{sub["flair-text"]}" and flair id "{flair_id}"')
+                    
                     # If it has, submit with the flair
                     subreddit.submit(title, selftext=message,
                                      flair_id=flair_id)
