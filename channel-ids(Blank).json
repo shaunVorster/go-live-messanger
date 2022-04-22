@@ -1,10 +1,14 @@
 {
     "channel-ids": [
         {
+            "server-name": "",
+            "channel-name": "",
             "id": "id 1",
             "active": true
         },
         {
+            "server-name": "",
+            "channel-name": "",
             "id": "id 2",
             "active": true
         }
