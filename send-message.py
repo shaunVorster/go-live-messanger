@@ -3,9 +3,9 @@ import tweepy
 import praw
 import asyncio
 import json
+import PySimpleGUI as sg
 import pkg_resources
 from pkg_resources import DistributionNotFound, VersionConflict
-
 
 def checkRequirements():
     # check requirements
@@ -14,7 +14,6 @@ def checkRequirements():
     pkg_resources.require(dependencies)
 
 # ------------------------------------------------------------------------------------
-
 
 def main():
     # Get message with confirmation
@@ -50,7 +49,6 @@ def main():
 
 # ------------------------------------------------------------------------------------
 
-
 def getTextWithConfirmation(inputMessage):
     # Get message from user and display message
     message = input(f'{inputMessage}: ')
@@ -69,7 +67,6 @@ def getTextWithConfirmation(inputMessage):
         return getTextWithConfirmation(inputMessage)
 
 # ------------------------------------------------------------------------------------
-
 
 def SendDiscordMessages(settingsData, message):
     # Check if discord messanger is enabled
@@ -91,7 +88,6 @@ def SendDiscordMessages(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
-
 def SendTwitterMessage(settingsData, message):
     # Check if twitter messanger is enabled
     if(settingsData['use-flags']['twitter'] == True):
@@ -111,7 +107,6 @@ def SendTwitterMessage(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
-
 def SendRedditMessage(settingsData, message):
     # Check if reddit messanger is enabled
     if(settingsData['use-flags']['reddit'] == True):
@@ -130,7 +125,6 @@ def SendRedditMessage(settingsData, message):
             print('')
 
 # ------------------------------------------------------------------------------------
-
 
 def discordMessanger(settingsData, message):
     print('')
@@ -226,7 +220,6 @@ def discordMessanger(settingsData, message):
 
 # ------------------------------------------------------------------------------------
 
-
 def twitterMessanger(settingsData, message):
     print('')
     print('Twitter Messanger')
@@ -266,7 +259,6 @@ def twitterMessanger(settingsData, message):
         return
 
 # ------------------------------------------------------------------------------------
-
 
 def redditMessanger(settingsData, message):
     print('')
@@ -372,8 +364,58 @@ def amendTextToMessage(message, text):
 
 # ------------------------------------------------------------------------------------
 
+def initGui():
+    print('This message will be used to construct the gui')
+    
+    settings = open('settings.json', 'r')
+    settingsData = json.load(settings)
+    
+    sg.theme('DarkAmber')
+    
+    services = [[sg.Text('Select the vervices you want to send to:')],
+                [sg.Checkbox('Discord', key='discord-checkbox', default=settingsData['use-flags']['discord']), 
+                 sg.Checkbox('Twitter', key='twitter-checkbox', default=settingsData['use-flags']['twitter']), 
+                 sg.Checkbox('Reddit', key='reddit-checkbox', default=settingsData['use-flags']['reddit'])],
+                [sg.Text("Please enter the prefered message:"), sg.Input(key='message-input')],
+                [sg.Checkbox("Amend twitch url", key='twitch-url-checkbox', default=settingsData['urls']['twitch']['auto-amend']), 
+                 sg.Input(key='twitch-url-input', default_text=settingsData['urls']['twitch']['url'])],
+                [sg.Button('Ok'), sg.Button('Cancel')]]   
+    
+    layout = [services]
+    
+    window = sg.Window('Go Live Messanger', layout)
+    
+    while True:
+        event, values = window.read()
+        if (event == sg.WIN_CLOSED or event == 'Cancel'):
+            break
+        
+        elif (event == 'Ok'):
+            # Get the data from the front end
+            useDiscord = values['discord-checkbox']
+            useTwitter = values['twitter-checkbox']
+            useReddit = values['reddit-checkbox']
+            message = values['message-input']
+            amendTwitchUrl = values['twitch-url-checkbox']
+            twitchUrl = values['twitch-url-input']
+            
+            # Build up the details
+            details = ''
+            details = details + "Use Discord: " + str(useDiscord) + "\n"
+            details = details + "Use Twitter: " + str(useTwitter) + "\n"
+            details = details + "Use Reddit: " + str(useReddit) + "\n"
+            details = details + "Message: " + message + "\n"
+            details = details + "Amend Twitch Url: " + str(amendTwitchUrl) + "\n"
+            details = details + "Twitch Url: " + twitchUrl + "\n"
+            sg.popup(details)
+   
+    window.close()
+    
+# ------------------------------------------------------------------------------------
+
 checkRequirements()
-main()
+initGui()
+# main()
 
 print('')
 print('Main Ending')
