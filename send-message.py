@@ -370,36 +370,81 @@ def initGui():
     settings = open('settings.json', 'r')
     settingsData = json.load(settings)
     
+    channelIds = open('channel-ids.json', 'r')
+    channelIdsData = json.load(channelIds)
+    channelIdList = channelIdsData['channel-ids']
+    subredditList = channelIdsData['subreddit-names']
+    
+    
     sg.theme('DarkAmber')
     
-    services = [[sg.Text('Select the vervices you want to send to:')],
+    servicesLayout = [[sg.Text('Select the vervices you want to send to:')],
                 [sg.Checkbox('Discord', key='discord-checkbox', default=settingsData['use-flags']['discord']), 
                  sg.Checkbox('Twitter', key='twitter-checkbox', default=settingsData['use-flags']['twitter']), 
-                 sg.Checkbox('Reddit', key='reddit-checkbox', default=settingsData['use-flags']['reddit'])],
-                [sg.Text("Please enter the prefered message:"), sg.Input(key='message-input')],
-                [sg.Checkbox("Amend twitch url", key='twitch-url-checkbox', default=settingsData['urls']['twitch']['auto-amend']), 
-                 sg.Input(key='twitch-url-input', default_text=settingsData['urls']['twitch']['url'])],
-                [sg.Button('Ok'), sg.Button('Cancel')]]   
+                 sg.Checkbox('Reddit', key='reddit-checkbox', default=settingsData['use-flags']['reddit'])]]   
     
-    layout = [services]
+    messageLayout = [[sg.Text("Please enter the prefered message:"), sg.Input(key='message-input')],
+                [sg.Checkbox("Amend twitch url", key='twitch-url-checkbox', default=settingsData['urls']['twitch']['auto-amend']), 
+                 sg.Input(key='twitch-url-input', default_text=settingsData['urls']['twitch']['url'])]]
+    
+    discordLayout = [[sg.Text('Select Discord Servers to send to:')],
+                *[[sg.Checkbox(channel['server-name']+ ' - ' + channel['channel-name'], default=channel['active'], key='dis-' + str(channel['channel-id']))] for channel in (channelIdList)],]
+    
+    twitterLayout = [[sg.Text('Enter your Twitter API Key:')],
+                [sg.Input(key='twitter-api-key-input', default_text=settingsData['access-tokens']['twitter']['api-key'])],
+                [sg.Text('Enter your Twitter API Secret:')],
+                [sg.Input(key='twitter-api-secret-input', default_text=settingsData['access-tokens']['twitter']['api-secret'])],
+                [sg.Text('Enter your Twitter Access Token:')],
+                [sg.Input(key='twitter-access-token-input', default_text=settingsData['access-tokens']['twitter']['access-token'])],
+                [sg.Text('Enter your Twitter Access Secret:')],
+                [sg.Input(key='twitter-access-secret-input', default_text=settingsData['access-tokens']['twitter']['access-secret'])]]
+    
+    redditLayout = [[sg.Text('Select the subreddits you would like to send to:')],
+                    *[[sg.Checkbox(subreddit['name'], default=subreddit['active'], key='sub-' + str(subreddit['id'])), sg.Text('Please enter the flair text: '), sg.Input(default_text=subreddit['flair-text'])] for subreddit in (subredditList)],]
+
+    submitLayout = [[sg.Button('Ok'), sg.Button('Cancel')]]   
+     
+    layout = [[sg.Frame(title='Service Layout', layout=servicesLayout)], 
+              [sg.Frame(title='Message Layout', layout=messageLayout)],
+              [sg.Frame(title='Discord Layout', layout=discordLayout)],
+            #   [sg.Frame(title='Twitter Layout', layout=twitterLayout)], 
+              [sg.Frame(title='Reddit Layout', layout=redditLayout)],
+              submitLayout]
     
     window = sg.Window('Go Live Messanger', layout)
     
     while True:
         event, values = window.read()
         if (event == sg.WIN_CLOSED or event == 'Cancel'):
-            break
-        
-        elif (event == 'Ok'):
+            break        
+        elif (event == 'Ok'):    
             # Get the data from the front end
             useDiscord = values['discord-checkbox']
             useTwitter = values['twitter-checkbox']
             useReddit = values['reddit-checkbox']
+            
             message = values['message-input']
             amendTwitchUrl = values['twitch-url-checkbox']
             twitchUrl = values['twitch-url-input']
             
-            # Build up the details
+            if useDiscord:
+                for channel in channelIdList:
+                    if values['dis-' + str(channel['channel-id'])] == True:
+                        sg.popup(channel['server-name'] + ' - ' + channel['channel-name'] + ' was active')
+                        #send message to discord
+                        
+            if useTwitter:
+                sg.popup('Twitter was active')
+                # send message to twitter
+            
+            if useReddit:
+                for subreddit in subredditList:
+                    if values['sub-' + str(subreddit['id'])] == True:
+                        sg.popup(subreddit['name'] + ' was active')
+                        #send message to reddit
+            
+            
+            # Build up the details (This need to be replaced / removed)
             details = ''
             details = details + "Use Discord: " + str(useDiscord) + "\n"
             details = details + "Use Twitter: " + str(useTwitter) + "\n"
